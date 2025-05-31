@@ -16,3 +16,53 @@
   <input name="id_categoria" placeholder="ID Categoría" type="number" required />
   <button type="submit">Crear</button>
 </form>
+<h1>Nueva Inscripción</h1>
+<form method="POST">
+  <label>Participante:</label>
+  <select name="id_participante" required>
+    <% participantes.forEach(p => { %>
+      <option value="<%= p.id_participante %>"><%= p.nombre %> <%= p.apellido %></option>
+    <% }) %>
+  </select>
+  <br/>
+
+  <label>Evento:</label>
+  <select name="id_evento" required>
+    <% eventos.forEach(e => { %>
+      <option value="<%= e.id_evento %>"><%= e.nombre %></option>
+    <% }) %>
+  </select>
+  <br/>
+
+  <label>Estado:</label>
+  <select name="estado" required>
+    <option value="inscrito">Inscrito</option>
+    <option value="cancelado">Cancelado</option>
+    <option value="finalizado">Finalizado</option>
+  </select>
+  <br/>
+
+  <button type="submit">Guardar</button>
+</form>
+<h1>Crear Resultado Final</h1>
+<form method="POST">
+  <label>Evento:</label>
+  <select name="id_evento" required>
+    <% eventos.forEach(e => { %>
+      <option value="<%= e.id_evento %>"><%= e.nombre %></option>
+    <% }) %>
+  </select><br/>
+
+  <label>Participante:</label>
+  <select name="id_participante" required>
+    <% participantes.forEach(p => { %>
+      <option value="<%= p.id_participante %>"><%= p.nombre %> <%= p.apellido %></option>
+    <% }) %>
+  </select><br/>
+
+  <input name="puntaje_total" type="number" step="0.01" placeholder="Puntaje Total" required /><br/>
+  <input name="posicion" type="number" placeholder="Posición" required /><br/>
+  <input name="medalla" placeholder="Medalla (oro/plata/bronce, opcional)" /><br/>
+
+  <button type="submit">Guardar</button>
+</form>

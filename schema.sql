@@ -86,3 +86,15 @@ CREATE TABLE ResultadosFinales (
     posicion INT NOT NULL CHECK (posicion >= 1),
     medalla tipo_medalla,
     UNIQUE(id_evento, id_
+-- Vista que combina evento, participante y resultado
+CREATE OR REPLACE VIEW VistaResultadosCompletos AS
+SELECT
+  r.id_resultado,
+  e.nombre AS evento,
+  p.nombre || ' ' || p.apellido AS participante,
+  r.puntaje_total,
+  r.posicion,
+  r.medalla
+FROM ResultadosFinales r
+JOIN Eventos e ON r.id_evento = e.id_evento
+JOIN Participantes p ON r.id_participante = p.id_participante;
