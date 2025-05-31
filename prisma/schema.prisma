@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id_usuario  Int     @id @default(autoincrement())
+  nombre      String
+  correo      String  @unique
+  contraseña  String
+  rol         String
+}
+
+model Institucion {
+  id_institucion    Int           @id @default(autoincrement())
+  nombre            String
+  direccion         String
+  telefono          String
+  correo_contacto   String        @unique
+  participantes     Participante[]
+}
+
+model Participante {
+  id_participante   Int            @id @default(autoincrement())
+  nombre            String
+  apellido          String
+  genero            String
+  fecha_nacimiento  DateTime
+  grado_escolar     String
+  id_institucion    Int
+  institucion       Institucion   @relation(fields: [id_institucion], references: [id_institucion])
+  inscripciones     Inscripcion[]
+  resultados        ResultadoFinal[]
+  feedbacks         Feedback[]
+}
+
+model Categoria {
+  id_categoria Int      @id @default(autoincrement())
+  nombre       String   @unique
+  descripcion  String?
+  eventos      Evento[]
+}
+
+model Evento {
+  id_evento   Int         @id @default(autoincrement())
+  id_categoria Int
+  nombre      String
+  fecha       DateTime
+  modalidad   String
+  categoria   Categoria   @relation(fields: [id_categoria], references: [id_categoria])
+  inscripciones Inscripcion[]
+  resultados    ResultadoFinal[]
+}
+
+model Inscripcion {
+  id_inscripcion     Int           @id @default(autoincrement())
+  id_participante    Int
+  id_evento          Int
+  fecha_inscripcion  DateTime      @default(now())
+  estado             String
+
+  participante       Participante  @relation(fields: [id_participante], references: [id_participante])
+  evento             Evento        @relation(fields: [id_evento], references: [id_evento])
+  evaluaciones       Evaluacion[]
+
+  @@unique([id_participante, id_evento])
+}
+
+model Juez {
+  id_juez       Int           @id @default(autoincrement())
+  nombre        String
+  correo        String        @unique
+  especialidad  String
+  evaluaciones  Evaluacion[]
+}
+
+model Evaluacion {
+  id_evaluacion   Int          @id @default(autoincrement())
+  id_inscripcion  Int
+  id_juez         Int
+  puntaje         Decimal
+
+  inscripcion     Inscripcion  @relation(fields: [id_inscripcion], references: [id_inscripcion])
+  juez            Juez         @relation(fields: [id_juez], references: [id_juez])
+
+  @@unique([id_inscripcion, id_juez])
+}
+
+model ResultadoFinal {
+  id_resultado     Int          @id @default(autoincrement())
+  id_evento        Int
+  id_participante  Int
+  puntaje_total    Decimal
+  posicion         Int
+  medalla          String?
+
+  evento           Evento       @relation(fields: [id_evento], references: [id_evento])
+  participante     Participante @relation(fields: [id_participante], references: [id_participante])
+
+  @@unique([id_evento, id_participante])
+}
+
+model Feedback {
+  id_feedback     Int          @id @default(autoincrement())
+  id_participante Int
+  comentario      String?
+  calificacion    Int?
+
+  participante    Participante @relation(fields: [id_participante], references: [id_participante])
+}

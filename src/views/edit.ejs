@@ -1,0 +1,16 @@
+<h1>Editar Participante</h1>
+<form method="POST">
+  <input name="nombre" value="<%= participante.nombre %>" required />
+  <input name="apellido" value="<%= participante.apellido %>" required />
+  <input name="genero" value="<%= participante.genero %>" required />
+  <input name="fecha_nacimiento" type="date" value="<%= participante.fecha_nacimiento.toISOString().split('T')[0] %>" required />
+  <input name="grado_escolar" value="<%= participante.grado_escolar %>" required />
+  <button type="submit">Actualizar</button>
+</form>
+<h1>Editar Evento</h1>
+<form method="POST">
+  <input name="nombre" value="<%= evento.nombre %>" required />
+  <input name="fecha" type="date" value="<%= evento.fecha.toISOString().split('T')[0] %>" required />
+  <input name="modalidad" value="<%= evento.modalidad %>" required />
+  <button type="submit">Actualizar</button>
+</form>
